@@ -1,0 +1,86 @@
+* {
+  font-family: "Maven Pro", sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background-color: rgb(66, 65, 65);
+  max-width: 300px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  user-select: none;
+  overflow: hidden;
+  -webkit-box-shadow: 31px 32px 64px -6px rgba(66, 68, 90, 1);
+  -moz-box-shadow: 31px 32px 64px -6px rgba(66, 68, 90, 1);
+  box-shadow: 31px 32px 64px -6px rgba(66, 68, 90, 1);
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+#Display-area {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: repeat(2, minmax(40px, auto));
+  word-wrap: break-word;
+}
+
+#Display-area .currentInput {
+  text-align: right;
+  height: 8vh;
+  color: white;
+  font-size: xx-large;
+  line-height: 2;
+  word-wrap: break-word;
+}
+
+#Display-area .answerScreen {
+  text-align: right;
+  color: rgba(150, 150, 150, 0.87);
+  font-size: 30px;
+  margin-right: 5px;
+}
+
+.keypad-btns {
+  display: grid;
+  grid: repeat(5, 70px) / repeat(4, 70px);
+}
+
+.keypad-btns button {
+  background-color: rgb(161, 161, 161);
+  color: white;
+  font-size: x-large;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.zero {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 5;
+  grid-row-end: 6;
+}
+
+.keypad-btns .gray {
+  background: rgb(109, 109, 109);
+}
+
+.keypad-btns .orange {
+  background: orange;
+}
+
+.num_btn:hover,
+.fun_btn:hover {
+  background-color: rgba(29, 29, 29, 0.979);
+}
