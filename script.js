@@ -1,79 +1,135 @@
-var queue = [];
-var input = 0;
+let queue = [];
+let input = 0;
 
-document.getElementById("clear").onclick = (e) => {
+document.getElementById("evaluate").onclick = () => {
+  checkResult(queue);
+};
+
+document.getElementById("clear").onclick = () => {
   clearAll();
 };
 
-document.querySelector(".keypad-btns").onclick = (e) => {
-  numericButton(e.target.value);
+document.getElementById("percent").onclick = () => {
+  checkPercentResult(queue);
 };
 
-document.getElementById("evaluate").onclick = (e) => {
-  calculateQueue(queue);
-};
+document.querySelectorAll(".num_btn").forEach((el) => {
+  el.onclick = (e) => {
+    numericButton(e.target.value);
+  };
+});
 
-function addToQueue(input) {
-  queue.push(input);
-  console.log(queue);
-}
+document.querySelectorAll(".fun_btn").forEach((el) => {
+  el.onclick = (e) => {
+    operatorButton(e.target.value);
+  };
+});
 
-function numericButton(arg) {
-  if (
-    document.getElementById("currentInput").innerHTML === "ERROR" ||
-    (document.getElementById("currentInput").innerHTML == "0" && arg != ".")
-  ) {
-    document.getElementById("currentInput").innerHTML = "";
-  }
-
-  if (!(arg === ".") || !input.match(/[.]/)) {
-    input += arg;
-    document.getElementById("currentInput").innerHTML += arg;
-    addToQueue(arg);
-  }
-}
-
-function calculateQueue(value) {
+function calculate(value) {
   if (input !== 0) {
     input = parseFloat(input);
 
     addToQueue(input);
   }
-  var answer = value[0];
-  var dividedByZero = 0;
-  for (var i = 2; i < value.length; i = i + 2) {
+  let answer = value[0];
+  let dividedByZero = 0;
+
+  for (let i = 2; i < value.length; i = i + 2) {
     switch (queue[i - 1]) {
+      case "*":
+        answer = answer * value[i];
+        break;
+      case "/":
+        if (value[i] === 0) dividedByZero = 1;
+        else answer = answer / value[i];
+        break;
       case "+":
         answer += value[i];
         break;
       case "-":
         answer -= value[i];
         break;
-      case "/":
-        if (value[i] === 0) dividedByZero = 1;
-        else answer = answer / value[i];
-
-        break;
-      case "*":
-        answer = answer * value[i];
-        break;
     }
   }
+  return {
+    answer: answer,
+    dividedByZero: dividedByZero,
+  };
+}
 
-  answer = answer.toFixed(10);
-  answer = parseFloat(answer);
+function roundPlus(x, n = 8) {
+  if (isNaN(x) || isNaN(n)) return false;
+  var m = Math.pow(10, n);
+  return Math.round(x * m) / m;
+}
+
+function checkResult(value) {
+  let result = calculate(value);
+  let answer = result.answer;
+  let dividedByZero = result.dividedByZero;
+
+  answer = roundPlus(answer);
   if (dividedByZero === 1) {
     clearAll();
-    document.getElementById("currentInput").innerHTML = "ERROR";
+    document.getElementById("answerScreen").innerHTML = "ERROR";
   } else {
-    document.getElementById("currentInput").innerHTML = answer;
+    document.getElementById("answerScreen").innerHTML = answer;
     input = answer;
     queue = [];
   }
 }
 
+function checkPercentResult(value) {
+  let result = calculate(value);
+  let answer = result.answer;
+  let dividedByZero = result.dividedByZero;
+
+  answer = answer / 100;
+  if (dividedByZero === 1) {
+    clearAll();
+    document.getElementById("answerScreen").innerHTML = "ERROR";
+  } else {
+    document.getElementById("answerScreen").innerHTML = answer;
+    input = answer;
+    queue = [];
+  }
+}
+
+function addToQueue(input) {
+  queue.push(input);
+}
+
 function clearAll() {
   queue = [];
   input = 0;
-  document.querySelector(".currentInput").innerHTML = "0";
+  document.getElementById("answerScreen").innerHTML = "0";
+}
+
+function numericButton(arg) {
+  if (
+    document.getElementById("answerScreen").innerHTML === "ERROR" ||
+    (document.getElementById("answerScreen").innerHTML == "0" && arg != ".")
+  ) {
+    document.getElementById("answerScreen").innerHTML = "";
+  }
+
+  if (!(arg === ".") || !input.match(/[.]/)) {
+    input += arg;
+    document.getElementById("answerScreen").innerHTML += arg;
+  }
+}
+
+function operatorButton(arg) {
+  if (input !== 0 && input !== "-") {
+    input = parseFloat(input);
+    addToQueue(input);
+    addToQueue(arg);
+    document.getElementById("answerScreen").innerHTML += arg;
+    input = 0;
+  }
+  if (arg == "-" && isNaN(queue[0]) && input !== "-") {
+    input = "-";
+
+    document.getElementById("answerScreen").innerHTML = "-";
+  }
 }

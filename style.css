@@ -30,26 +30,13 @@ body {
 
 #Display-area {
   width: 100%;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: repeat(2, minmax(40px, auto));
-  word-wrap: break-word;
 }
 
-#Display-area .currentInput {
+#Display-area #answerScreen {
   text-align: right;
-  height: 8vh;
-  color: white;
-  font-size: xx-large;
-  line-height: 2;
-  word-wrap: break-word;
-}
-
-#Display-area .answerScreen {
-  text-align: right;
-  color: rgba(150, 150, 150, 0.87);
+  color: rgba(255, 255, 255, 0.87);
   font-size: 30px;
-  margin-right: 5px;
+  margin: 15px 5px 15px 0;
 }
 
 .keypad-btns {
@@ -63,6 +50,7 @@ body {
   font-size: x-large;
   border: 1px solid black;
   border-collapse: collapse;
+  box-shadow: inset 0px 0px 20px -10px rgba(66, 68, 90, 1);
 }
 
 .zero {
@@ -70,6 +58,13 @@ body {
   grid-column-end: 3;
   grid-row-start: 5;
   grid-row-end: 6;
+}
+
+#clear {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
 }
 
 .keypad-btns .gray {
@@ -81,6 +76,9 @@ body {
 }
 
 .num_btn:hover,
-.fun_btn:hover {
+.fun_btn:hover,
+#percent:hover,
+#evaluate:hover,
+#clear:hover {
   background-color: rgba(29, 29, 29, 0.979);
 }
