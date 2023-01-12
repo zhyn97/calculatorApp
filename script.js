@@ -31,26 +31,38 @@ function calculate(value) {
 
     addToQueue(input);
   }
-  let answer = value[0];
+
+  let interimCalculations = [];
+  let answer;
   let dividedByZero = 0;
 
-  for (let i = 2; i < value.length; i = i + 2) {
-    switch (queue[i - 1]) {
-      case "*":
-        answer = answer * value[i];
-        break;
-      case "/":
-        if (value[i] === 0) dividedByZero = 1;
-        else answer = answer / value[i];
-        break;
-      case "+":
-        answer += value[i];
-        break;
-      case "-":
-        answer -= value[i];
-        break;
+  for (let i = 0; i < value.length; i += 1) {
+    if (value[i] == "+" || value[i] == "-" || typeof value[i] == "number") {
+      interimCalculations.push(value[i]);
+    } else if (value[i] == "*") {
+      let lastDigitOfQueue = interimCalculations.pop();
+      let multiplication = lastDigitOfQueue * value[i + 1];
+      interimCalculations.push(multiplication);
+      i += 1;
+    } else if (value[i] == "/") {
+      if (value[i + 1] === 0) dividedByZero = 1;
+      let lastDigitOfQueue = interimCalculations.pop();
+      let division = lastDigitOfQueue / value[i + 1];
+      interimCalculations.push(division);
+      i += 1;
     }
   }
+
+  answer = interimCalculations[0];
+
+  for (let i = 1; i < interimCalculations.length; i = i + 2) {
+    if (interimCalculations[i] == "+") {
+      answer += interimCalculations[i + 1];
+    } else {
+      answer -= interimCalculations[i + 1];
+    }
+  }
+
   return {
     answer: answer,
     dividedByZero: dividedByZero,
@@ -80,15 +92,23 @@ function checkResult(value) {
 }
 
 function checkPercentResult(value) {
-  let result = calculate(value);
-  let answer = result.answer;
-  let dividedByZero = result.dividedByZero;
+  if (value.length > 1) {
+    let result = calculate(value);
+    let answer = result.answer;
+    let dividedByZero = result.dividedByZero;
 
-  answer = answer / 100;
-  if (dividedByZero === 1) {
-    clearAll();
-    document.getElementById("answerScreen").innerHTML = "ERROR";
+    answer = answer / 100;
+    if (dividedByZero === 1) {
+      clearAll();
+      document.getElementById("answerScreen").innerHTML = "ERROR";
+    } else {
+      document.getElementById("answerScreen").innerHTML = answer;
+      input = answer;
+      queue = [];
+    }
   } else {
+    addToQueue(input);
+    let answer = value[0] / 100;
     document.getElementById("answerScreen").innerHTML = answer;
     input = answer;
     queue = [];
