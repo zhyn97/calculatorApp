@@ -1,6 +1,8 @@
 let queue = [];
 let input = 0;
 
+const answerScreen = document.getElementById("answerScreen");
+
 document.getElementById("evaluate").onclick = () => {
   checkResult(queue);
 };
@@ -83,9 +85,9 @@ function checkResult(value) {
   answer = roundPlus(answer);
   if (dividedByZero === 1) {
     clearAll();
-    document.getElementById("answerScreen").innerHTML = "ERROR";
+    answerScreen.innerHTML = "ERROR";
   } else {
-    document.getElementById("answerScreen").innerHTML = answer;
+    answerScreen.innerHTML = answer;
     input = answer;
     queue = [];
   }
@@ -100,16 +102,16 @@ function checkPercentResult(value) {
     answer = answer / 100;
     if (dividedByZero === 1) {
       clearAll();
-      document.getElementById("answerScreen").innerHTML = "ERROR";
+      answerScreen.innerHTML = "ERROR";
     } else {
-      document.getElementById("answerScreen").innerHTML = answer;
+      answerScreen.innerHTML = answer;
       input = answer;
       queue = [];
     }
   } else {
     addToQueue(input);
     let answer = value[0] / 100;
-    document.getElementById("answerScreen").innerHTML = answer;
+    answerScreen.innerHTML = answer;
     input = answer;
     queue = [];
   }
@@ -122,20 +124,20 @@ function addToQueue(input) {
 function clearAll() {
   queue = [];
   input = 0;
-  document.getElementById("answerScreen").innerHTML = "0";
+  answerScreen.innerHTML = "0";
 }
 
 function numericButton(arg) {
   if (
-    document.getElementById("answerScreen").innerHTML === "ERROR" ||
-    (document.getElementById("answerScreen").innerHTML == "0" && arg != ".")
+    answerScreen.innerHTML === "ERROR" ||
+    (answerScreen.innerHTML == "0" && arg != ".")
   ) {
-    document.getElementById("answerScreen").innerHTML = "";
+    answerScreen.innerHTML = "";
   }
 
   if (!(arg === ".") || !input.match(/[.]/)) {
     input += arg;
-    document.getElementById("answerScreen").innerHTML += arg;
+    answerScreen.innerHTML += arg;
   }
 }
 
@@ -144,12 +146,12 @@ function operatorButton(arg) {
     input = parseFloat(input);
     addToQueue(input);
     addToQueue(arg);
-    document.getElementById("answerScreen").innerHTML += arg;
+    answerScreen.innerHTML += arg;
     input = 0;
   }
   if (arg == "-" && isNaN(queue[0]) && input !== "-") {
     input = "-";
 
-    document.getElementById("answerScreen").innerHTML = "-";
+    answerScreen.innerHTML = "-";
   }
 }
